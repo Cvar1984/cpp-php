@@ -1,21 +1,52 @@
 #include <phpcpp.h>
 #include <unistd.h>
+#include <iostream>
 #include <sys/ioctl.h>
+#include <termcolor.hpp>
 #include <Kalkulator.hpp>
 
 using namespace Php;
 
+// general utils
 void clear_screen()
 {
     write(STDOUT_FILENO, "\x1b[2J", 4);
     write(STDOUT_FILENO, "\x1b[H", 3);
 }
 
+void printclr(Parameters &params)
+{
+    switch((int)params[1]) {
+        case 1:
+            std::cout
+                << termcolor::red
+                << params[0]
+                << termcolor::reset
+                << std::endl;
+            break;
+        case 2:
+            std::cout
+                << termcolor::green
+                << params[0]
+                << termcolor::reset
+                << std::endl;
+            break;
+        case 3:
+            std::cout
+                << termcolor::blue
+                << params[0]
+                << termcolor::reset
+                << std::endl;
+            break;
+
+    }
+}
+
 extern "C" {
     PHPCPP_EXPORT void *get_module() {
         static Extension extension("cvar1984", "1.0");
 
-        Class<Kalkulator> kalkulator("Kalkulator");
+        Class<Kalkulator> kalkulator("Cvar1984\\Kalkulator");
 
         kalkulator.method<&Kalkulator::swap>("swap", {
                 ByRef("a", Type::Numeric),
@@ -38,6 +69,13 @@ extern "C" {
                 ByVal("b", Type::Numeric)
                 });
         extension.add<clear_screen>("clrscr");
+        extension.add<printclr>("printclr", {
+                ByVal("a", Type::String),
+                ByVal("b", Type::Constant)
+                });
+        extension.add(Constant("TERM_RED", 1));
+        extension.add(Constant("TERM_GREEN", 2));
+        extension.add(Constant("TERM_BLUE", 3));
         extension.add(std::move(kalkulator));
         return extension;
     }
