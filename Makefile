@@ -5,6 +5,7 @@ MAIN =main.cpp
 OUTPUT =cvar1984.so
 LIB_DIR_OP = ${LIB_DIR}/${OUTPUT}
 CFLAG +=-lphpcpp
+CFLAG +=-lncurses
 CFLAG +=-I${INCLUDE_DIR}
 CFLAG +=-shared
 CFLAG +=-fpic
