@@ -2,11 +2,14 @@
 #include <unistd.h>
 #include <iostream>
 #include <sys/ioctl.h>
-#include <termcolor.hpp>
-#include <Kalkulator.hpp>
-#include <Console.hpp>
+#include "include/termcolor.hpp"
+#include "include/Kalkulator.hpp"
+#include "include/Console.hpp"
 
 using namespace Php;
+using namespace Cvar1984;
+using namespace std;
+using namespace termcolor;
 
 // general utils
 void clear_screen()
@@ -19,27 +22,26 @@ void printclr(Parameters &params)
 {
     switch((int)params[1]) {
         case 1:
-            std::cout
-                << termcolor::red
+            cout
+                << red
                 << params[0]
-                << termcolor::reset
-                << std::endl;
+                << reset
+                << endl;
             break;
         case 2:
-            std::cout
-                << termcolor::green
+            cout
+                << green
                 << params[0]
-                << termcolor::reset
-                << std::endl;
+                << reset
+                << endl;
             break;
         case 3:
-            std::cout
-                << termcolor::blue
+            cout
+                << blue
                 << params[0]
-                << termcolor::reset
-                << std::endl;
+                << reset
+                << endl;
             break;
-
     }
 }
 
@@ -85,8 +87,8 @@ extern "C" {
         extension.add(Constant("TERM_RED", 1));
         extension.add(Constant("TERM_GREEN", 2));
         extension.add(Constant("TERM_BLUE", 3));
-        extension.add(std::move(kalkulator));
-        extension.add(std::move(console));
+        extension.add(move(kalkulator));
+        extension.add(move(console));
         return extension;
     }
 }
