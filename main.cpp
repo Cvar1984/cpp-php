@@ -2,10 +2,14 @@
 #include <unistd.h>
 #include <iostream>
 #include <sys/ioctl.h>
-#include <termcolor.hpp>
-#include <Kalkulator.hpp>
+#include "include/termcolor.hpp"
+#include "include/Kalkulator.hpp"
+#include "include/Console.hpp"
 
 using namespace Php;
+using namespace Cvar1984;
+using namespace std;
+using namespace termcolor;
 
 // general utils
 void clear_screen()
@@ -18,27 +22,26 @@ void printclr(Parameters &params)
 {
     switch((int)params[1]) {
         case 1:
-            std::cout
-                << termcolor::red
+            cout
+                << red
                 << params[0]
-                << termcolor::reset
-                << std::endl;
+                << reset
+                << endl;
             break;
         case 2:
-            std::cout
-                << termcolor::green
+            cout
+                << green
                 << params[0]
-                << termcolor::reset
-                << std::endl;
+                << reset
+                << endl;
             break;
         case 3:
-            std::cout
-                << termcolor::blue
+            cout
+                << blue
                 << params[0]
-                << termcolor::reset
-                << std::endl;
+                << reset
+                << endl;
             break;
-
     }
 }
 
@@ -47,6 +50,7 @@ extern "C" {
         static Extension extension("cvar1984", "1.0");
 
         Class<Kalkulator> kalkulator("Cvar1984\\Kalkulator");
+        Class<Console> console("Cvar1984\\Console");
 
         kalkulator.method<&Kalkulator::swap>("swap", {
                 ByRef("a", Type::Numeric),
@@ -68,6 +72,13 @@ extern "C" {
                 ByVal("a", Type::Numeric),
                 ByVal("b", Type::Numeric)
                 });
+        console.method<&Console::__construct>("__construct", {
+                ByVal("a", Type::Numeric, false)
+                });
+        console.method<&Console::ncursesPrintw>("printw", {
+                ByVal("a", Type::String)
+                });
+        console.method<&Console::__destruct>("__destruct");
         extension.add<clear_screen>("clrscr");
         extension.add<printclr>("printclr", {
                 ByVal("a", Type::String),
@@ -76,7 +87,8 @@ extern "C" {
         extension.add(Constant("TERM_RED", 1));
         extension.add(Constant("TERM_GREEN", 2));
         extension.add(Constant("TERM_BLUE", 3));
-        extension.add(std::move(kalkulator));
+        extension.add(move(kalkulator));
+        extension.add(move(console));
         return extension;
     }
 }

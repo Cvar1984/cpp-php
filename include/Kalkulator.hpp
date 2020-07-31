@@ -2,43 +2,43 @@
 #define KALKULATOR_HPP
 #include <phpcpp.h>
 
-using namespace Php;
-
-class Kalkulator : public Base
+namespace Cvar1984
 {
-    public:
-        // constructor
-        Kalkulator() = default;
-        // destructor
-        virtual ~Kalkulator() = default;
-        // magic method
-        std::string __toString()
-        {
-            return "v0.1";
-        }
-        // normal method
-        Value swap(Parameters &params)
-        {
-            Value temp = params[0];
-            params[0] = params[1];
-            params[1] = temp;
-            return true;
-        }
-        Value tambah(Parameters &params)
-        {
-            return params[0] + params[1];
-        }
-        Value kurang(Parameters &params)
-        {
-            return params[0] - params[1];
-        }
-        Value bagi(Parameters &params)
-        {
-            return params[0] / params[1];
-        }
-        Value kali(Parameters &params)
-        {
-            return params[0] * params[1];
-        }
-};
+
+    class Kalkulator : public Php::Base
+    {
+        public:
+            Kalkulator() = default;
+            virtual ~Kalkulator() = default;
+            // magic method
+            std::string __toString()
+            {
+                return "v0.1";
+            }
+            // normal method
+            Php::Value swap(Php::Parameters &params)
+            {
+                Php::Value temp = params[0];
+                params[0] = params[1];
+                params[1] = temp;
+                return true;
+            }
+            Php::Value tambah(Php::Parameters &params)
+            {
+                return params[0] + params[1];
+            }
+            Php::Value kurang(Php::Parameters &params)
+            {
+                return params[0] - params[1];
+            }
+            Php::Value bagi(Php::Parameters &params)
+            {
+                return params[0] / params[1];
+            }
+            Php::Value kali(Php::Parameters &params)
+            {
+                return params[0] * params[1];
+            }
+    };
+}
 #endif
